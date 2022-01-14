@@ -2,6 +2,7 @@ import React from 'react'
 import './Post.css';
 import Avatar from '@mui/material/Avatar';
 
+
 function Post({userName, caption, imageUrl}) {
     return (
         <div className='post'>
