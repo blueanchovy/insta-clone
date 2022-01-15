@@ -7,6 +7,11 @@
   background-color: #fafafa;   
 }
 .app__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
   padding : 20px;
   object-fit: contain;
   background-color: white;
@@ -14,6 +19,7 @@
 }
 
 .app__headerImage{
+  object-fit: contain;
   width : 100px;
   height : 38px;
 }
@@ -21,4 +27,15 @@
 .app__signup {
   display : flex;
   flex-direction : column;
+}
+
+.app__imageUpload {
+  max-width : 500px;
+}
+
+.app__posts {
+  display: flex;
+  flex-direction : column;
+  justify-content: center;
+  padding: 20px;
 }

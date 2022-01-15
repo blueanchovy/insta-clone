@@ -1,5 +1,6 @@
 import React , { useState, useEffect } from 'react';
 import './App.css';
+import ImageUpload from './ImageUpload';
 import Post from './Post.js';
 import { auth, db } from './firebase.js';
 import { collection, onSnapshot } from "firebase/firestore";
@@ -31,6 +32,8 @@ function App() {
   const [ password, setPassword ] = useState('');
   const [ user, setUser ] = useState(null);
   const [ openSignIn, setOpenSignIn] = useState(false);
+
+  
 
   // Hook for detecting change in database and reflecting the same in feed
   useEffect(() => {
@@ -88,9 +91,11 @@ function App() {
 
   return (
     <div className="app">
+      
+      
 
+      {/* Modal for signing up */}
 
-      {/* Modal for signing up below */}
       <Modal  
         open={open}
         onClose={() => setOpen(false)}//will close if clicked anywhere else on screen
@@ -132,7 +137,7 @@ function App() {
         
       </Modal>
      
-      {/* Modal for signing in below */}
+      {/* Modal for signing in*/}
 
       <Modal  
         open={openSignIn}
@@ -173,29 +178,55 @@ function App() {
       {/* Header */}
       <div className='app__header'>
         <img className='app__headerImage' src='https://pngimg.com/uploads/instagram/instagram_PNG5.png' alt='' />
+
+        {/* Login/Signup Container */}
+        { user ? (
+          <Button variant="text" onClick={() => signOut(auth)}>Logout</Button>
+        ): (
+          <div className="app__loginContainer">
+            <Button variant="text" onClick={() => setOpenSignIn(true)}>Sign In</Button>
+            <Button variant="text" onClick={() => setOpen(true)}>Sign Up</Button>
+          </div>
+          
+        )
+        }
       </div>
 
+      
 
-      {/* Login/Signup Container */}
-      { user ? (
-        <Button variant="text" onClick={() => signOut(auth)}>Logout</Button>
-      ): (
-        <div className="app__loginContainer">
-          <Button variant="text" onClick={() => setOpenSignIn(true)}>Sign In</Button>
-          <Button variant="text" onClick={() => setOpen(true)}>Sign Up</Button>
-        </div>
+
+      
+
+    {/* Upload image widget */}
+
+    <div>
+      {user?.displayName ? (
+        <ImageUpload userName={user.displayName} />
+      ):(
+        <center>
+          <h3>Sign Up/Sign In to upload or comment</h3>
+        </center>
         
-      )
-      }
-
-      {/* Posts */}
-     { posts.map(({id, post}) => (
-      <Post key={id} userName={post.userName} caption={post.caption} imageUrl={post.imageUrl}></Post>
-      ))}
-
-      <h1>Hello Friend!</h1>
+      )}
     </div>
-  );
+      
+
+    {/* Posts */}
+      
+        <div className="app__posts">
+          <center>
+            { posts.map(({id, post}) => (
+              <Post key={id} postId={id} user={user} userName={post.userName} caption={post.caption} imageUrl={post.imageUrl}></Post>
+              ))}
+          </center>
+        </div>
+      
+      
+    
+
+    <h1>Hello Friend!</h1>
+    </div>
+    );
 }
 
 export default App;
